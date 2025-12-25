@@ -10,13 +10,21 @@ class KartuKendaliController extends Controller
     public function store(Request $request)
     {
         $request->validate(['foto_dokumentasi' => 'image|max:2048', 'kwitansi_tagihan' => 'mimes:pdf,jpg,png|max:2048']);
+        $request->validate([
+            'perencanaan_id' => 'required|exists:perencanaans,id',
+            'permasalahan' => 'required|string',
+            'penanganan' => 'required|string',
+            'tagging_lokasi' => 'nullable|string',
+            'foto_dokumentasi' => 'nullable|image|max:2048',
+            'kwitansi_tagihan' => 'nullable|mimes:pdf,jpg,png|max:2048',
+        ]);
 
         $foto = $request->file('foto_dokumentasi') ? $request->file('foto_dokumentasi')->store('dokumentasi', 'public') : null;
         $kwitansi = $request->file('kwitansi_tagihan') ? $request->file('kwitansi_tagihan')->store('kwitansi', 'public') : null;
 
         KartuKendali::create([
             'perencanaan_id' => $request->perencanaan_id,
-            'pekerja_id' => auth()->id(),
+            'pekerja_id' => $request->user()->id(),
             'waktu_pelaksanaan' => now(),
             'permasalahan' => $request->permasalahan,
             'penanganan' => $request->penanganan,

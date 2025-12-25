@@ -34,6 +34,8 @@ Route::middleware('auth')->group(function () {
     // 4. Fitur Peminjaman Ruang Rapat (Pegawai BPS)
     Route::get('/ruang-rapat/create', [RuangRapatController::class, 'create'])->name('ruang-rapat.create');
     Route::post('/ruang-rapat', [RuangRapatController::class, 'store'])->name('ruang-rapat.store');
+    Route::get('/peminjaman-ruang/create', [RuangRapatController::class, 'create'])->name('peminjaman-ruang.create');
+    Route::post('/peminjaman-ruang', [RuangRapatController::class, 'store'])->name('peminjaman-ruang.store');
 
     // 5. Fitur Laporan Keamanan (Satpam)
     Route::get('/keamanan/create', [KeamananController::class, 'create'])->name('keamanan.create');
@@ -46,3 +48,4 @@ Route::middleware('auth')->group(function () {
 });
 
 require __DIR__.'/auth.php';
+

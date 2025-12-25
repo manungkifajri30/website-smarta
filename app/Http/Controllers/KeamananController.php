@@ -9,6 +9,15 @@ class KeamananController extends Controller
 {
     public function store(Request $request)
     {
+        $request->validate([
+            'pelapor' => 'required|string',
+            'nama_kejadian' => 'required|string',
+            'waktu_kejadian' => 'required|date',
+            'permasalahan' => 'required|string',
+            'penanganan' => 'required|string',
+            'catatan' => 'nullable|string',
+        ]);
+
         LaporanKeamanan::create([
             'satpam_id' => auth()->id(),
             'pelapor' => $request->pelapor,

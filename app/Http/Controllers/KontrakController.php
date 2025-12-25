@@ -9,6 +9,16 @@ class KontrakController extends Controller
 {
     public function store(Request $request)
     {
+        $request->validate([
+            'perencanaan_id' => 'required|exists:perencanaans,id',
+            'nomor_kontrak' => 'required|string',
+            'nilai_kontrak' => 'required|numeric|min:0',
+            'tanggal_mulai' => 'required|date',
+            'tanggal_selesai' => 'required|date|after_or_equal:tanggal_mulai',
+            'pihak_kedua' => 'required|string',
+            'latar_belakang' => 'nullable|string',
+        ]);
+
         KontrakKerja::create([
             'perencanaan_id' => $request->perencanaan_id,
             'nomor_kontrak' => $request->nomor_kontrak,

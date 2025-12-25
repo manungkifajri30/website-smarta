@@ -18,6 +18,11 @@ class PerencanaanController extends Controller
     {
         $request->validate(['dokumen_kak' => 'nullable|mimes:pdf|max:2048']);
         
+        $request->validate([
+            'item_id' => 'required|exists:item_layanans,id',
+            'dokumen_kak' => 'nullable|mimes:pdf|max:2048',
+        ]);
+
         $path = $request->file('dokumen_kak') ? $request->file('dokumen_kak')->store('kak', 'public') : null;
 
         Perencanaan::create([
