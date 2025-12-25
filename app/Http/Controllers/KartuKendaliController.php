@@ -3,10 +3,17 @@
 namespace App\Http\Controllers;
 
 use App\Models\KartuKendali;
+use App\Models\Perencanaan;
 use Illuminate\Http\Request;
 
 class KartuKendaliController extends Controller
 {
+    public function create()
+    {
+        $perencanaans = Perencanaan::with('item')->get();
+
+        return view('kartu-kendali.create', compact('perencanaans'));
+    }
     public function store(Request $request)
     {
         $request->validate(['foto_dokumentasi' => 'image|max:2048', 'kwitansi_tagihan' => 'mimes:pdf,jpg,png|max:2048']);
