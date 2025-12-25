@@ -1,0 +1,30 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Models\KartuKendali;
+use Illuminate\Http\Request;
+
+class KartuKendaliController extends Controller
+{
+    public function store(Request $request)
+    {
+        $request->validate(['foto_dokumentasi' => 'image|max:2048', 'kwitansi_tagihan' => 'mimes:pdf,jpg,png|max:2048']);
+
+        $foto = $request->file('foto_dokumentasi') ? $request->file('foto_dokumentasi')->store('dokumentasi', 'public') : null;
+        $kwitansi = $request->file('kwitansi_tagihan') ? $request->file('kwitansi_tagihan')->store('kwitansi', 'public') : null;
+
+        KartuKendali::create([
+            'perencanaan_id' => $request->perencanaan_id,
+            'pekerja_id' => auth()->id(),
+            'waktu_pelaksanaan' => now(),
+            'permasalahan' => $request->permasalahan,
+            'penanganan' => $request->penanganan,
+            'tagging_lokasi' => $request->tagging_lokasi,
+            'foto_dokumentasi' => $foto,
+            'kwitansi_tagihan' => $kwitansi,
+        ]);
+
+        return redirect()->back()->with('success', 'Laporan kartu kendali berhasil dikirim.');
+    }
+}
